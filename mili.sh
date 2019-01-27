@@ -27,8 +27,19 @@ function select_random_user() {
   local login_information=$1
   local length=$(echo $login_information | jq -r 'length')
   local sum_of_shares=$(echo $login_information | jq 'map(.share) | add')
+  local random_number=$((RANDOM % ($sum_of_shares+1)))
 
-  return 0  #TODO: select random
+  for i in $(seq 0 $(($length-1))); do
+    local info=$(echo $login_information | jq ".[$i]")
+    local share=$(echo $info | jq ".share")
+
+    random_number=$(($random_number - $share))
+    if [ $random_number -le 0 ]; then
+      return $i
+    fi
+  done
+
+  return 0
 }
 
 function login() {
