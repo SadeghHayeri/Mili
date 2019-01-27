@@ -23,6 +23,14 @@ function logout() {
   return 0
 }
 
+function select_random_user() {
+  local login_information=$1
+  local length=$(echo $login_information | jq -r 'length')
+  local sum_of_shares=$(echo $login_information | jq 'map(.share) | add')
+
+  return 0  #TODO: select random
+}
+
 function login() {
   local username=$1
   local password=$2
@@ -39,24 +47,22 @@ function login() {
   return $successful
 }
 
-function select_random_user() {
+function login_using_login_info() {
   local login_information=$1
-  local length=$(echo $login_information | jq -r 'length')
-  local sum_of_shares=$(echo $login_information | jq 'map(.share) | add')
+  local user_index=$2
 
-  return 0  #TODO: select random
-}
-
-function random_login() {
-  local login_information=$(cat ~/.milirc | jq '.login_information')
-
-  select_random_user "$login_information"
-  local user_info=$(echo $login_information | jq -r ".[$?]")
-
+  local user_info=$(echo $login_information | jq -r ".[$user_index]")
   local username=$(echo $user_info | jq '.username')
   local password=$(echo $user_info | jq '.password')
 
   login $username $password
+  return $?
+}
+
+function random_login() {
+  local login_information=$(cat ~/.milirc | jq '.login_information')
+  select_random_user "$login_information"
+  login_using_login_info "$login_information" $?
   return $?
 }
 
@@ -65,12 +71,7 @@ function try_all() {
   local length=$(echo $login_information | jq -r 'length')
 
   for i in $(seq 0 $(($length-1))); do
-    local user_info=$(echo $login_information | jq -r ".[$i]")
-
-    local username=$(echo $user_info | jq '.username')
-    local password=$(echo $user_info | jq '.password')
-
-    login $username $password
+    login_using_login_info "$login_information" $i
     if [ $? -eq 0 ]; then
       return 0
     fi
