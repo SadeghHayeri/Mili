@@ -1,7 +1,8 @@
 #!/bin/bash
 
 PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:"
-base_url=$(cat ~/.milirc | jq -r '.base_url')
+CONFIG=$(cat "/Users/<-USER->/.mili/config.json")
+base_url=$(echo $CONFIG | jq -r '.base_url')
 
 function get_status() {
   curl -s "$base_url/login" | grep "logged" > /dev/null
@@ -72,14 +73,14 @@ function login_using_login_info() {
 }
 
 function random_login() {
-  local login_information=$(cat ~/.milirc | jq '.login_information')
+  local login_information=$(echo $CONFIG | jq '.login_information')
   select_random_user "$login_information"
   login_using_login_info "$login_information" $?
   return $?
 }
 
 function try_all() {
-  local login_information=$(cat ~/.milirc | jq '.login_information')
+  local login_information=$(echo $CONFIG | jq '.login_information')
   local length=$(echo $login_information | jq -r 'length')
 
   for i in $(seq 0 $(($length-1))); do
