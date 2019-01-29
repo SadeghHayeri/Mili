@@ -22,3 +22,6 @@ echo "Enable MikroTik service..."
 launchctl remove com.mikrotik
 launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.plist"
 launchctl start com.mikrotik
+
+echo "Install Mili App..."
+cp -r ../app/Mili.app /Applications/Mili.app
