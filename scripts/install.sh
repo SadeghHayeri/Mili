@@ -1,11 +1,12 @@
 #!/bin/bash
 
-./init_config.sh
-./install-deps.sh
-
 user=$(id -un)
-script_location="/Users/$user/.mili/bin"
+mili_location="/Users/$user/.mili"
+script_location="$mili_location/bin"
 service_location="/Users/$user/Library/LaunchAgents"
+
+./init_config.sh $mili_location
+./install-deps.sh
 
 echo "Install Mili scripts..."
 mkdir -p $script_location
