@@ -2,7 +2,7 @@
 
 mili_location=$1
 
-cat banner.txt
+cat ../asserts/banner.txt
 
 echo "# Mili, Automatic Login for MikroTik Services"
 echo "# Version 0.1.0, Alpha A"
@@ -24,7 +24,7 @@ function check_mikrotik_services() {
 }
 
 function generate_basic_config() {
-  cp ./config.json "$mili_location/config.json"
+  cp ../asserts/config.json "$mili_location/config.json"
 }
 
 function check_and_save() {
@@ -36,8 +36,8 @@ function check_and_save() {
   echo
   echo 'OK'
   if [ $? -eq 0 ]; then
-    cat ~/.mili/config.json | jq ".login_information[.login_information | length] |= . + {\"username\": \"$username\", \"password\": \"$password\", \"share\": 1}" > ~/.mili/config.json.tmp
-    mv ~/.mili/config.json.tmp ~/.mili/config.json
+    cat "$mili_location/config.json" | jq ".login_information[.login_information | length] |= . + {\"username\": \"$username\", \"password\": \"$password\", \"share\": 1}" > "$mili_location/config.json.tmp"
+    mv "$mili_location/config.json.tmp" "$mili_location/config.json"
   fi
 }
 
@@ -56,7 +56,7 @@ function set_base_url() {
       echo
     fi
   done
-  sed -i '' "s/<-BASEURL->/$base_url/g" "$mili_location/config.json"
+  sed -i '' "s|<-BASEURL->|$base_url|g" "$mili_location/config.json"
 }
 
 function add_login_information() {
