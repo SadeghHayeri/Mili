@@ -5,6 +5,7 @@ mili_location="/Users/$user/.mili"
 script_location="$mili_location/bin"
 service_location="/Users/$user/Library/LaunchAgents"
 
+mkdir -p $mili_location
 ./init_config.sh $mili_location
 ./install-deps.sh
 

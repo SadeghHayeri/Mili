@@ -10,7 +10,6 @@ function get_status() {
 }
 
 function check_mikrotik() {
-  return 0
   curl -s "captive.apple.com" --connect-timeout 3 | grep "login required" > /dev/null
   return $?
 }
