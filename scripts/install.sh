@@ -26,3 +26,6 @@ launchctl start com.mikrotik
 
 echo "Install Mili App..."
 cp -r ../app/Mili.app /Applications/Mili.app
+
+echo "Install Mili Command Line..."
+ln -s "$script_location/mili.sh" /usr/local/bin/mili
