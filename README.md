@@ -1,6 +1,8 @@
 # Mili
 
-![](logo/logo.png)
+<p align="center">
+  <img src="logo/logo.png" alt="Notable" width="300">
+</p>
 
 ![](https://img.shields.io/github/license/SadeghHayeri/Mili.svg?colorB=red&style=for-the-badge) ![](https://img.shields.io/github/repo-size/SadeghHayeri/Mili.svg?colorB=blue&style=for-the-badge)
 
