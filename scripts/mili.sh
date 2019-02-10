@@ -112,7 +112,8 @@ function notify_user() {
   if [ $OSTYPE == 'darwin' ]; then
     terminal-notifier -title Mili -message "$message" -open "$base_url/login" -sender com.apple.automator.Mili -group mili > /dev/null
   else
-    notify-send "Mili" "$message" -i "/home/<-USER->/.mili/logo.png" > /dev/null
+    local user="<-USER->"
+    sudo -u $user DISPLAY=:0 "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u $user)/bus" notify-send "Mili" "$message" -i "/home/sadegh/.mili/logo.png"
   fi
 
 }
