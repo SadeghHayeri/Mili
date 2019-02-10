@@ -4,7 +4,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-        <string>com.mikrotik</string>
+        <string>com.mikrotik.mili</string>
     <key>EnvironmentVariables</key>
         <dict>
           <key>PATH</key>
