@@ -1,31 +1,87 @@
 #!/bin/bash
 
-user=$(id -un)
-mili_location="/Users/$user/.mili"
-script_location="$mili_location/bin"
-service_location="/Users/$user/Library/LaunchAgents"
+case "$OSTYPE" in
+  darwin*)
+    user=$(id -un)
+    mili_location="/Users/$user/.mili"
+    script_location="$mili_location/bin"
+    service_location="/Users/$user/Library/LaunchAgents"
+    ;;
+  linux*)
+    user=$(id -un)
+    mili_location="/home/$user/.mili"
+    script_location="$mili_location/bin"
+    service_location="/etc/systemd/system"
+    ;;
+  *)
+    echo "Mili not support your OS: $OSTYPE"
+    exit 1
+    ;;
+esac
 
-mkdir -p $mili_location
-./init_config.sh $mili_location
-./install-deps.sh
+# inplace sed
+function ised() {
+  local exp=$1
+  local location=$2
 
-echo "Install Mili scripts..."
-mkdir -p $script_location
-cp ./mili.sh "$script_location/mili.sh"
-sed -i '' "s|<-USER->|$user|g" "$script_location/mili.sh"
-chmod +x "$script_location/mili.sh"
+  if [[ $OSTYPE == 'darwin' ]]; then
+    sed -i '' $exp $location
+  else
+    sed -i $exp $location
+  fi
+}
 
-echo "Add MikroTik service..."
-cp ../asserts/com.mikrotik.plist "$service_location/com.mikrotik.plist"
-sed -i '' "s|<-USER->|$user|g" "$service_location/com.mikrotik.plist"
+function install_mili_scripts() {
+  echo "Install Mili scripts..."
+  mkdir -p $script_location
+  cp ./mili.sh "$script_location/mili.sh"
+  cp ../logo/logo.png "$mili_location/logo.png"
+  ised "s|<-USER->|$user|g" "$script_location/mili.sh"
+  chmod +x "$script_location/mili.sh"
+}
 
-echo "Enable MikroTik service..."
-launchctl remove com.mikrotik
-launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.plist"
-launchctl start com.mikrotik
+function add_mikrotik_service() {
+  echo "Add MikroTik service..."
 
-echo "Install Mili App..."
-cp -r ../app/Mili.app /Applications/Mili.app
+  if [[ $OSTYPE == 'darwin' ]]; then
+    cp ../asserts/com.mikrotik.plist "$service_location/com.mikrotik.mili.plist"
+    ised "s|<-USER->|$user|g" "$service_location/com.mikrotik.mili.plist"
 
-echo "Install Mili Command Line..."
-ln -s "$script_location/mili.sh" /usr/local/bin/mili
+    echo "Enable MikroTik service..."
+    launchctl remove com.mikrotik
+    launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.mili.plist"
+    launchctl start com.mikrotik
+  else
+    cp ../asserts/com.mikrotik.mili.service "$service_location/com.mikrotik.mili.service"
+    sudo systemctl start com.mikrotik.mili.service
+  fi
+}
+
+function install_mili_gui() {
+  echo "Install Mili App..."
+  cp -r ../app/Mili.app /Applications/Mili.app
+}
+
+function install_mili_cli() {
+  echo "Install Mili Command Line..."
+  sudo rm -f /usr/local/bin/mili
+  sudo ln -s "$script_location/mili.sh" /usr/local/bin/mili
+}
+
+function main() {
+  mkdir -p $mili_location
+  ./init_config.sh $mili_location
+  ./install-deps.sh
+
+  install_mili_scripts
+  add_mikrotik_service
+
+  install_mili_cli
+  if [ $OSTYPE == 'darwin' ]; then
+    install_mili_gui
+  fi
+}
+
+install_mili_scripts
+
+#main

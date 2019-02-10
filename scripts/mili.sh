@@ -1,7 +1,14 @@
 #!/bin/bash
 
 PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:"
-CONFIG=$(cat "/Users/<-USER->/.mili/config.json")
+case $OSTYPE in
+  darwin*)
+    CONFIG=$(cat "/Users/<-USER->/.mili/config.json");;
+  linux*)
+    CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
+  *)
+    echo "Mili not support your OS: $OSTYPE";;
+esac
 base_url=$(echo $CONFIG | jq -r '.base_url')
 
 function get_status() {
@@ -15,8 +22,15 @@ function check_mikrotik() {
 }
 
 function check_network_connection() {
-  airport --getinfo | grep running > /dev/null
-  return $?
+  local default_interface=$(echo $CONFIG | jq -r '.default_interface')
+
+  if [ $OSTYPE == 'darwin' ]; then
+    ifconfig $default_interface | grep "inet" > /dev/null
+    return $?
+  else
+    ip address | grep enp0s5 | grep inet > /dev/null
+    return $?
+  fi
 }
 
 function logout() {
@@ -64,8 +78,8 @@ function login_using_login_info() {
   local user_index=$2
 
   local user_info=$(echo $login_information | jq -r ".[$user_index]")
-  local username=$(echo $user_info | jq '.username')
-  local password=$(echo $user_info | jq '.password')
+  local username=$(echo $user_info | jq -r '.username')
+  local password=$(echo $user_info | jq -r '.password')
 
   login $username $password
   return $?
@@ -94,7 +108,13 @@ function try_all() {
 
 function notify_user() {
   local message=$1
-  terminal-notifier -title Mili -message "$message" -open "$base_url/login" -sender com.apple.automator.Mili -group mili
+
+  if [ $OSTYPE == 'darwin' ]; then
+    terminal-notifier -title Mili -message "$message" -open "$base_url/login" -sender com.apple.automator.Mili -group mili > /dev/null
+  else
+    notify-send "Mili" "$message" -i "/home/<-USER->/.mili/logo.png" > /dev/null
+  fi
+
 }
 
 function auto_login() {

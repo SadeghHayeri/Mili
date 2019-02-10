@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# inplace sed
+function ised() {
+  local exp=$1
+  local location=$2
+
+  if [[ $OSTYPE == 'darwin' ]]; then
+    sed -i '' $exp $location
+  else
+    sed -i $exp $location
+  fi
+}
+
 mili_location=$1
 
 cat ../asserts/banner.txt
@@ -56,7 +68,7 @@ function set_base_url() {
       echo
     fi
   done
-  sed -i '' "s|<-BASEURL->|$base_url|g" "$mili_location/config.json"
+  ised "s|<-BASEURL->|$base_url|g" "$mili_location/config.json"
 }
 
 function add_login_information() {

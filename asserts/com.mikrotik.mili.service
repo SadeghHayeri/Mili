@@ -1,0 +1,8 @@
+[Unit]
+Description=Mili Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/mili
