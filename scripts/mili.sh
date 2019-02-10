@@ -131,7 +131,7 @@ function login_by_user() {
       login $username $password
       return $?
     else
-      echo 'User Not Found!'
+      echo '✘ User Not Found!'
       return 1
     fi
   done
@@ -162,17 +162,17 @@ function try_login() {
 function auto_login() {
   check_network_connection
   if [[ $? -eq 0 ]]; then
-    echo "Network [YES]"
+    echo "Network [✔]"
   else
-    echo "Network [NO]"
+    echo "Network [✘]"
     return 0
   fi
 
   check_mikrotik
   if [[ $? -eq 0 ]]; then
-    echo "Mikrotik [YES]"
+    echo "Mikrotik [✔]"
   else
-    echo "Mikrotik [NO]"
+    echo "Mikrotik [✘]"
     return 0
   fi
 
@@ -191,9 +191,9 @@ elif [[ $1 == login ]]; then
 elif [[ $1 == status ]]; then
   get_status
   if [[ $? -eq 0 ]]; then
-    echo 'You Are Logined'
+    echo '✔ You Are Logined'
   else
-    echo 'Not Login'
+    echo '✘ Not Login'
   fi
 elif [[ $1 == logout ]]; then
   logout
