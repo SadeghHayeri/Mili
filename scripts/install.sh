@@ -52,8 +52,8 @@ function add_mikrotik_service() {
     launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.mili.plist"
     launchctl start com.mikrotik
   else
-    cp ../asserts/com.mikrotik.mili.service "$service_location/com.mikrotik.mili.service"
-    sudo systemctl start com.mikrotik.mili.service
+    sudo rm -f /etc/network/if-up.d/mili
+    sudo ln -s "$script_location/mili.sh" /etc/network/if-up.d/mili
   fi
 }
 
@@ -82,6 +82,4 @@ function main() {
   fi
 }
 
-install_mili_scripts
-
-#main
+main
