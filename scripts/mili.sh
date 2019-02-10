@@ -118,23 +118,26 @@ function notify_user() {
 
 }
 
-function auto_login() {
-  check_network_connection
-  if [[ $? -eq 0 ]]; then
-    echo "Network [YES]"
-  else
-    echo "Network [NO]"
-    return 0
-  fi
+function login_by_user() {
+  local user=$1
+  local login_information=$(echo $CONFIG | jq '.login_information')
+  local length=$(echo $login_information | jq -r 'length')
 
-  check_mikrotik
-  if [[ $? -eq 0 ]]; then
-    echo "Mikrotik [YES]"
-  else
-    echo "Mikrotik [NO]"
-    return 0
-  fi
+  for i in $(seq 0 $(($length-1))); do
+    local user_info=$(echo $login_information | jq ".[] | select(.username == \"$user\")")
+    if [[ ! -z "$user_info" ]]; then
+      local username=$(echo $user_info | jq -r '.username')
+      local password=$(echo $user_info | jq -r '.password')
+      login $username $password
+      return $?
+    else
+      echo 'User Not Found!'
+      return 1
+    fi
+  done
+}
 
+function try_login() {
   random_login
   if [[ $? -eq 1 ]]; then
     echo "RandomLogin [FAILED]"
@@ -156,4 +159,42 @@ function auto_login() {
   return 1
 }
 
-auto_login
+function auto_login() {
+  check_network_connection
+  if [[ $? -eq 0 ]]; then
+    echo "Network [YES]"
+  else
+    echo "Network [NO]"
+    return 0
+  fi
+
+  check_mikrotik
+  if [[ $? -eq 0 ]]; then
+    echo "Mikrotik [YES]"
+  else
+    echo "Mikrotik [NO]"
+    return 0
+  fi
+
+  try_login
+  return $?
+}
+
+if [[ $# -le 0 ]]; then
+  auto_login
+elif [[ $1 == login ]]; then
+  if [[ $# -eq 2 ]]; then
+    login_by_user $2
+  else
+    try_login
+  fi
+elif [[ $1 == status ]]; then
+  get_status
+  if [[ $? -eq 0 ]]; then
+    echo 'You Are Logined'
+  else
+    echo 'Not Login'
+  fi
+elif [[ $1 == logout ]]; then
+  logout
+fi
