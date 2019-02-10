@@ -124,7 +124,7 @@ function auto_login() {
     echo "Network [YES]"
   else
     echo "Network [NO]"
-    return 1
+    return 0
   fi
 
   check_mikrotik
@@ -132,7 +132,7 @@ function auto_login() {
     echo "Mikrotik [YES]"
   else
     echo "Mikrotik [NO]"
-    return 1
+    return 0
   fi
 
   random_login
