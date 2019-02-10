@@ -24,11 +24,11 @@ function check_mikrotik() {
 function check_network_connection() {
   local default_interface=$(echo $CONFIG | jq -r '.default_interface')
 
-  if [ $OSTYPE == 'darwin' ]; then
+  if [[ $OSTYPE == darwin* ]]; then
     ifconfig $default_interface | grep "inet" > /dev/null
     return $?
   else
-    ip address | grep enp0s5 | grep inet > /dev/null
+    ip address | grep $default_interface | grep inet > /dev/null
     return $?
   fi
 }
@@ -49,7 +49,7 @@ function select_random_user() {
     local share=$(echo $info | jq ".share")
 
     random_number=$(($random_number - $share))
-    if [ $random_number -le 0 ]; then
+    if [[ $random_number -le 0 ]]; then
       return $i
     fi
   done
@@ -62,12 +62,12 @@ function login() {
   local password=$2
 
   get_status
-  if [ $? -eq 0 ]; then logout; fi;
+  if [[ $? -eq 0 ]]; then logout; fi;
 
   curl -s "$base_url/login?username=$username&password=$password" | grep "logged" >> /dev/null
   local successful=$?
 
-  if [ $successful -eq 0 ]; then
+  if [[ $successful -eq 0 ]]; then
     notify_user "Successfuly Login whit $username"
   fi
   return $successful
@@ -98,7 +98,7 @@ function try_all() {
 
   for i in $(seq 0 $(($length-1))); do
     login_using_login_info "$login_information" $i
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
       return 0
     fi
   done
@@ -109,7 +109,7 @@ function try_all() {
 function notify_user() {
   local message=$1
 
-  if [ $OSTYPE == 'darwin' ]; then
+  if [[ $OSTYPE == darwin* ]]; then
     terminal-notifier -title Mili -message "$message" -open "$base_url/login" -sender com.apple.automator.Mili -group mili > /dev/null
   else
     local user="<-USER->"
@@ -120,7 +120,7 @@ function notify_user() {
 
 function auto_login() {
   check_network_connection
-  if [ $? -eq 0 ]; then
+  if [[ $? -eq 0 ]]; then
     echo "Network [YES]"
   else
     echo "Network [NO]"
@@ -128,7 +128,7 @@ function auto_login() {
   fi
 
   check_mikrotik
-  if [ $? -eq 0 ]; then
+  if [[ $? -eq 0 ]]; then
     echo "Mikrotik [YES]"
   else
     echo "Mikrotik [NO]"
@@ -136,7 +136,7 @@ function auto_login() {
   fi
 
   random_login
-  if [ $? -eq 1 ]; then
+  if [[ $? -eq 1 ]]; then
     echo "RandomLogin [FAILED]"
   else
     echo "RandomLogin [SUCCESS]"
@@ -144,7 +144,7 @@ function auto_login() {
   fi
 
   try_all
-  if [ $? -eq 1 ]; then
+  if [[ $? -eq 1 ]]; then
     echo "TryAll [FAILED]"
   else
     echo "TryAll [SUCCESS]"

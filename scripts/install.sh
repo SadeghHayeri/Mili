@@ -24,7 +24,7 @@ function ised() {
   local exp=$1
   local location=$2
 
-  if [[ $OSTYPE == 'darwin' ]]; then
+  if [[ $OSTYPE == darwin* ]]; then
     sed -i '' $exp $location
   else
     sed -i $exp $location
@@ -43,14 +43,14 @@ function install_mili_scripts() {
 function add_mikrotik_service() {
   echo "Add MikroTik service..."
 
-  if [[ $OSTYPE == 'darwin' ]]; then
-    cp ../asserts/com.mikrotik.plist "$service_location/com.mikrotik.mili.plist"
+  if [[ $OSTYPE == darwin* ]]; then
+    cp ../asserts/com.mikrotik.mili.plist "$service_location/com.mikrotik.mili.plist"
     ised "s|<-USER->|$user|g" "$service_location/com.mikrotik.mili.plist"
 
     echo "Enable MikroTik service..."
-    launchctl remove com.mikrotik
+    launchctl remove com.mikrotik.mili
     launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.mili.plist"
-    launchctl start com.mikrotik
+    launchctl start com.mikrotik.mili
   else
     sudo rm -f /etc/network/if-up.d/mili
     sudo ln -s "$script_location/mili.sh" /etc/network/if-up.d/mili
@@ -77,7 +77,7 @@ function main() {
   add_mikrotik_service
 
   install_mili_cli
-  if [ $OSTYPE == 'darwin' ]; then
+  if [[ $OSTYPE == darwin* ]]; then
     install_mili_gui
   fi
 }

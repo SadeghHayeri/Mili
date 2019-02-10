@@ -5,7 +5,7 @@ function ised() {
   local exp=$1
   local location=$2
 
-  if [[ $OSTYPE == 'darwin' ]]; then
+  if [[ $OSTYPE == darwin* ]]; then
     sed -i '' $exp $location
   else
     sed -i $exp $location
@@ -47,7 +47,7 @@ function check_and_save() {
   # ./mili.sh login $username $password
   echo
   echo 'OK'
-  if [ $? -eq 0 ]; then
+  if [[ $? -eq 0 ]]; then
     cat "$mili_location/config.json" | jq ".login_information[.login_information | length] |= . + {\"username\": \"$username\", \"password\": \"$password\", \"share\": 1}" > "$mili_location/config.json.tmp"
     mv "$mili_location/config.json.tmp" "$mili_location/config.json"
   fi
@@ -59,7 +59,7 @@ function set_base_url() {
     read -p 'Mikrotik URL: ' base_url
     echo 'Checking for MikroTik Services...'
     check_mikrotik_services
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
       echo "Successful"
       break
     else
