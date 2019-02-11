@@ -60,6 +60,7 @@ function select_random_user() {
 function login() {
   local username=$1
   local password=$2
+  password=$(echo $password | sed 's| |%20|g') # fix space in password
 
   get_status
   if [[ $? -eq 0 ]]; then logout; fi;
