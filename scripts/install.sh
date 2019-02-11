@@ -70,9 +70,9 @@ function install_mili_cli() {
 
 function main() {
   mkdir -p $mili_location
-  ./init_config.sh $mili_location
   ./install-deps.sh
-
+  ./init_config.sh $mili_location
+  
   install_mili_scripts
   add_mikrotik_service
 
