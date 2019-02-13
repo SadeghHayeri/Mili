@@ -1,6 +1,8 @@
 #!/bin/bash
 
 PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:"
+mili_location="<-MILI-LOCATION->"
+
 case $OSTYPE in
   darwin*)
     CONFIG=$(cat "/Users/<-USER->/.mili/config.json");;
@@ -82,7 +84,7 @@ function login_using_login_info() {
   local username=$(echo $user_info | jq -r '.username')
   local password=$(echo $user_info | jq -r '.password')
 
-  login $username $password
+  login "$username" "$password"
   return $?
 }
 
@@ -129,7 +131,8 @@ function login_by_user() {
     if [[ ! -z "$user_info" ]]; then
       local username=$(echo $user_info | jq -r '.username')
       local password=$(echo $user_info | jq -r '.password')
-      login $username $password
+
+      login "$username" "$password"
       return $?
     else
       echo '✘ User Not Found!'
@@ -198,4 +201,6 @@ elif [[ $1 == status ]]; then
   fi
 elif [[ $1 == logout ]]; then
   logout
+elif [[ $1 == config ]]; then
+  sh -c "$mili_location/bin/init_config.sh $mili_location"
 fi

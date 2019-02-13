@@ -35,8 +35,10 @@ function install_mili_scripts() {
   echo "Install Mili scripts..."
   mkdir -p $script_location
   cp ./mili.sh "$script_location/mili.sh"
+  cp ./init_config.sh "$script_location/init_config.sh"
   cp ../logo/logo.png "$mili_location/logo.png"
   ised "s|<-USER->|$user|g" "$script_location/mili.sh"
+  ised "s|<-MILI-LOCATION->|$mili_location|g" "$script_location/mili.sh"
   chmod +x "$script_location/mili.sh"
 }
 
@@ -70,9 +72,9 @@ function install_mili_cli() {
 
 function main() {
   mkdir -p $mili_location
-  ./install-deps.sh
-  ./init_config.sh $mili_location
-  
+  # ./install-deps.sh
+  # ./init_config.sh $mili_location
+
   install_mili_scripts
   add_mikrotik_service
 
