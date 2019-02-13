@@ -47,6 +47,7 @@ function check_mikrotik_services() {
 function generate_basic_config() {
   cat > "$mili_location/config.json" <<- EOM
 {
+  "version": 0,
 	"enable": true,
 	"base_url": "<-BASEURL->",
 	"login_information" : []
