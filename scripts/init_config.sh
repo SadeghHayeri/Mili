@@ -49,7 +49,6 @@ function generate_basic_config() {
 {
 	"enable": true,
 	"base_url": "<-BASEURL->",
-	"default_interface": "en0",
 	"login_information" : []
 }
 EOM

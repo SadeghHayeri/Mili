@@ -23,18 +23,6 @@ function check_mikrotik() {
   return $?
 }
 
-function check_network_connection() {
-  local default_interface=$(echo $CONFIG | jq -r '.default_interface')
-
-  if [[ $OSTYPE == darwin* ]]; then
-    ifconfig $default_interface | grep "inet" > /dev/null
-    return $?
-  else
-    ip address | grep $default_interface | grep inet > /dev/null
-    return $?
-  fi
-}
-
 function logout() {
   curl -s "$base_url/logout" > /dev/null
   return 0
@@ -164,14 +152,6 @@ function try_login() {
 }
 
 function auto_login() {
-  check_network_connection
-  if [[ $? -eq 0 ]]; then
-    echo "Network [✔]"
-  else
-    echo "Network [✘]"
-    return 0
-  fi
-
   check_mikrotik
   if [[ $? -eq 0 ]]; then
     echo "Mikrotik [✔]"
