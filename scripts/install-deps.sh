@@ -1,5 +1,17 @@
 #!/bin/bash
 
+function install_if_not_found() {
+  command=$1
+
+  if ! which $command > /dev/null; then
+    if [[ $OSTYPE == darwin* ]]; then
+      brew install $command
+    else
+      sudo apt-get install -y $command
+    fi
+  fi
+}
+
 function install_linux_deps() {
   echo "Update apt-get..."
   sudo apt-get update
@@ -9,7 +21,7 @@ function install_linux_deps() {
     jq
     curl
   )
-  sudo apt-get install -y ${PACKAGES[@]}
+  install_if_not_found ${PACKAGES[@]}
 }
 
 function install_darwin_deps() {
@@ -17,20 +29,17 @@ function install_darwin_deps() {
   if test ! $(which brew); then
     echo "Installing homebrew..."
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    echo "Update homebrew recipes..."
+    brew update
   fi
 
-  echo "Update homebrew recipes..."
-  brew update
-
+  echo "Installing packages..."
   PACKAGES=(
     jq
     terminal-notifier
   )
-  echo "Installing packages..."
-  brew install ${PACKAGES[@]}
-
-  echo "Cleaning up..."
-  brew cleanup
+  install_if_not_found ${PACKAGES[@]}
 }
 
 function main() {
