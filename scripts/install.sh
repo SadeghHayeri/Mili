@@ -42,7 +42,7 @@ function install_mili_scripts() {
   chmod +x "$script_location/mili.sh"
 }
 
-function add_mikrotik_service() {
+function add_startup_service() {
   echo "Add MikroTik service..."
 
   if [[ $OSTYPE == darwin* ]]; then
@@ -64,10 +64,26 @@ function install_mili_gui() {
   cp -r ../app/Mili.app /Applications/Mili.app
 }
 
+# TODO: support fish and zsh
+function install_auto_complete() {
+  echo "Install Auto Complete..."
+  cp ./mili-auto-complete.sh "$script_location/mili-auto-complete.sh"
+  ised "s|<-USER->|$user|g" "$script_location/mili-auto-complete.sh"
+  echo "source $script_location/mili-auto-complete.sh" >> ~/.bashrc
+
+  # sample for fish
+  if which fish > /dev/null; then
+    complete -c mili -xa "login status logout"
+    echo complete -c mili -xa "\"login status logout\"" >> ~/.config/fish/config.fish
+  fi
+}
+
 function install_mili_cli() {
   echo "Install Mili Command Line..."
   sudo rm -f /usr/local/bin/mili
   sudo ln -s "$script_location/mili.sh" /usr/local/bin/mili
+
+  install_auto_complete
 }
 
 function main() {
@@ -75,7 +91,7 @@ function main() {
   ./install-deps.sh
 
   install_mili_scripts
-  add_mikrotik_service
+  add_startup_service
 
   install_mili_cli
   if [[ $OSTYPE == darwin* ]]; then
