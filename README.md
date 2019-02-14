@@ -1,5 +1,4 @@
 # Mili
-
 <p align="center">
   <img src="logo/logo.png" alt="Notable" width="400">
 </p>
@@ -44,22 +43,33 @@ cd Mili/scripts
 ```
 
 ### Usage
+
+##### `Init/change configs`
 ```
-# Init/change configs
-$ mili config
+mili config
+```
 
-# Check and login
-$ mili
+##### `Check and login`
+```
+mili
+```
 
-# Force login
-$ mili login
+##### `Force login`
+```
+mili login
+```
 
-# Login with specific user (password must saved before)
-$ miili login <UserName>
+##### `Login with specific user (password must saved before)`
+```
+mili login <UserName>
+```
 
-# Status
-$ mili status
+##### `Status`
+```
+mili status
+```
 
-# Logout
-$ mili logout
+##### `Logout`
+```
+mili logout
 ```
