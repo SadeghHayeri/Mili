@@ -17,11 +17,8 @@ function install_linux_deps() {
   sudo apt-get update
 
   echo "Installing packages..."
-  PACKAGES=(
-    jq
-    curl
-  )
-  install_if_not_found ${PACKAGES[@]}
+  install_if_not_found jq
+  install_if_not_found curl
 }
 
 function install_darwin_deps() {
@@ -35,11 +32,8 @@ function install_darwin_deps() {
   fi
 
   echo "Installing packages..."
-  PACKAGES=(
-    jq
-    terminal-notifier
-  )
-  install_if_not_found ${PACKAGES[@]}
+  install_if_not_found jq
+  install_if_not_found terminal-notifier
 }
 
 function main() {
