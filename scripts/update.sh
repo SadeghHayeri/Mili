@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo 'There is no update yet'
+# Nothing to Update
