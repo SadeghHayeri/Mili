@@ -97,6 +97,9 @@ function main() {
   if [[ $OSTYPE == darwin* ]]; then
     install_mili_gui
   fi
+
+  echo
+  echo "Now run 'mili config' to start"
 }
 
 main
