@@ -17,7 +17,7 @@ Every time you connect to new WiFi, Mili check Mikrotik services, if found try l
 
 [[notification sample]]
 
-In addittonal you can set more than one login info (for example your close friend password)
+In additional you can set more than one login info (for example your close friend password)
 for Mili, every time Mili try using random user! (yes! you can set **share percentage** too)
 
 Example:
@@ -39,24 +39,27 @@ Example:
 ### Installation
 ```
 git clone https://github.com/SadeghHayeri/Mili.git
-cd Mili/scritps
+cd Mili/scripts
 ./install.sh
 ```
 
 ### Usage
 ```
-# Check and Login
-mili
+# Init/change configs
+$ mili config
+
+# Check and login
+$ mili
+
+# Force login
+$ mili login
 
 # Login with specific user (password must saved before)
-miili login <UserName>
-
-# Login with unsaved username and password (NOT SAFE)
-mili login <UserName> <Password>
+$ miili login <UserName>
 
 # Status
-mili status
+$ mili status
 
 # Logout
-mili logout
+$ mili logout
 ```
