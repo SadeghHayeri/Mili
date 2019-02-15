@@ -74,7 +74,7 @@ function install_auto_complete() {
   # sample for fish
   if which fish > /dev/null; then
     complete -c mili -xa "login status logout"
-    echo "complete -c mili -xa 'login status logout'" | sudo tee --append ~/.config/fish/config.fish > /dev/null
+    echo "complete -c mili -xa 'login status logout'" | sudo tee -a ~/.config/fish/config.fish > /dev/null
   fi
 }
 
