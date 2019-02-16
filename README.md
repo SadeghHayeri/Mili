@@ -15,7 +15,7 @@ Mili is an open source tool for auto login hotspot pages. if you are tired of in
 Every time you connect to a new WiFi, Mili checks Mikrotik services and try to login.
 
 <p align="center">
-	<img src="images/linux-notif.png" alt="linux mili notify"> <img src="images/mac-notif.png" alt="macos mili notify">
+	<img src="images/linux-notif.png" alt="linux mili notify" style="width: 471px;padding-bottom: 77px;"> <img src="images/mac-notif.png" alt="macos mili notify" style="width: 400px;padding-top: 45px;">
 </p>
 
 In addition, you can set more than one login info (for example your close friend password)
