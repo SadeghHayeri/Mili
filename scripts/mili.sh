@@ -132,21 +132,21 @@ function login_by_user() {
 function try_login() {
   random_login
   if [[ $? -eq 1 ]]; then
-    echo "RandomLogin [FAILED]"
+    echo "RandomLogin [✘]"
   else
-    echo "RandomLogin [SUCCESS]"
+    echo "RandomLogin [✔]"
     return 0
   fi
 
   try_all
   if [[ $? -eq 1 ]]; then
-    echo "TryAll [FAILED]"
+    echo "TryAll [✘]"
   else
-    echo "TryAll [SUCCESS]"
+    echo "TryAll [✔]"
     return 0
   fi
 
-  echo "Login [FAILED]"
+  echo "Login [✘]"
   notify_user "There was a problem with your login request"
   return 1
 }
