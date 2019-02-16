@@ -44,6 +44,19 @@ cd Mili/scripts
 ./install.sh
 ```
 
+##### MacOnly (disable captive popup page)
+`this is optional`
+1. Restart your Mac.
+2. Before OS X starts up, hold down Command-R and keep it held down until you see an Apple icon and a progress bar. Release. This boots you into Recovery.
+3. From the Utilities menu, select Terminal.
+4. At the prompt type exactly the following and then press Return: csrutil disable
+5. Terminal should display a message that SIP was disabled.
+6. In the Finder, select Go > Go To Folder.
+7. Enter /System/Library/CoreServices and hit return.
+8. Find Captive Network Assistant, click it, and rename it with an extra word, like Captive Network Assistant Do Not Launch and press return.
+9. Enter your password when prompted to make the change.
+10. From the  menu, select Restart.
+
 ### Usage
 
 ##### `Init/change configs`
