@@ -42,6 +42,8 @@ Example:
 git clone https://github.com/SadeghHayeri/Mili.git
 cd Mili/scripts
 ./install.sh
+
+mili config
 ```
 
 ##### MacOnly (disable captive popup page)
