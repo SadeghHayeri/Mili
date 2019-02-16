@@ -10,14 +10,14 @@
 
 ### Never see login pages again!
 
-Mili is an open source tools for auto login hotspot pages, if you tierd inserting username and password for internet access, Mili is your friend!
+Mili is an open source tool for auto login hotspot pages. if you are tired of inserting username and password for internet access, Mili is your friend!
 
-Every time you connect to new WiFi, Mili check Mikrotik services, if found try login using your login information and show you success notification!
+Every time you connect to a new WiFi, Mili checks Mikrotik services and try to login.
 
 [[notification sample]]
 
-In additional you can set more than one login info (for example your close friend password)
-for Mili, every time Mili try using random user! (yes! you can set **share percentage** too)
+In addition, you can set more than one login info (for example your close friend password)
+for Mili. every time Mili tries to use a random user! (yes! you can set **share percentage** too)
 
 Example:
 ```

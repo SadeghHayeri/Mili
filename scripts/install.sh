@@ -14,7 +14,7 @@ case "$OSTYPE" in
     service_location="/etc/systemd/system"
     ;;
   *)
-    echo "Mili not support your OS: $OSTYPE"
+    echo "Mili does not support your OS yet, sorry :("
     exit 1
     ;;
 esac
@@ -32,7 +32,7 @@ function ised() {
 }
 
 function install_mili_scripts() {
-  echo "Install Mili scripts..."
+  echo "Installing Mili scripts..."
   mkdir -p $script_location
   cp ./mili.sh "$script_location/mili.sh"
   cp ./init_config.sh "$script_location/init_config.sh"
@@ -43,13 +43,13 @@ function install_mili_scripts() {
 }
 
 function add_startup_service() {
-  echo "Add MikroTik service..."
+  echo "Adding MikroTik services..."
 
   if [[ $OSTYPE == darwin* ]]; then
     cp ../asserts/com.mikrotik.mili.plist "$service_location/com.mikrotik.mili.plist"
     ised "s|<-USER->|$user|g" "$service_location/com.mikrotik.mili.plist"
 
-    echo "Enable MikroTik service..."
+    echo "Enabling MikroTik services..."
     launchctl remove com.mikrotik.mili
     launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.mili.plist"
     launchctl start com.mikrotik.mili
@@ -60,13 +60,13 @@ function add_startup_service() {
 }
 
 function install_mili_gui() {
-  echo "Install Mili App..."
+  echo "Installing Mili App..."
   cp -r ../app/Mili.app /Applications/Mili.app
 }
 
 # TODO: support fish and zsh
 function install_auto_complete() {
-  echo "Install Auto Complete..."
+  echo "Installing Auto Complete..."
   cp ./mili-auto-complete.sh "$script_location/mili-auto-complete.sh"
   ised "s|<-USER->|$user|g" "$script_location/mili-auto-complete.sh"
   echo "source $script_location/mili-auto-complete.sh" >> ~/.bashrc
@@ -79,7 +79,7 @@ function install_auto_complete() {
 }
 
 function install_mili_cli() {
-  echo "Install Mili Command Line..."
+  echo "Installing Mili Command Line..."
   sudo rm -f /usr/local/bin/mili
   sudo ln -s "$script_location/mili.sh" /usr/local/bin/mili
 
@@ -99,7 +99,7 @@ function main() {
   fi
 
   echo
-  echo "Now run 'mili config' to start"
+  echo "Now run 'mili config' to start :)"
 }
 
 main

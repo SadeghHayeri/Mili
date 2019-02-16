@@ -1,3 +1,3 @@
 #!/bin/bash
 
-# Nothing to Update
+# Nothing to update

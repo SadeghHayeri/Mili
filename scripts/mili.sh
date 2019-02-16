@@ -9,7 +9,7 @@ case $OSTYPE in
   linux*)
     CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
   *)
-    echo "Mili not support your OS: $OSTYPE";;
+    echo "Mili does not support your OS yet, sorry :(";;
 esac
 base_url=$(echo $CONFIG | jq -r '.base_url')
 
@@ -59,7 +59,7 @@ function login() {
   local successful=$?
 
   if [[ $successful -eq 0 ]]; then
-    notify_user "Successfuly Login whit $username"
+    notify_user "Successfully logged in with $username"
   fi
   return $successful
 }
@@ -180,7 +180,7 @@ elif [[ $1 == login ]]; then
 elif [[ $1 == status ]]; then
   get_status
   if [[ $? -eq 0 ]]; then
-    echo '✔ You Are Logined'
+    echo '✔ You are logged in'
   else
     echo '✘ Not Login'
   fi

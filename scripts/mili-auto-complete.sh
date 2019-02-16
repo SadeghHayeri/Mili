@@ -8,7 +8,7 @@ case $OSTYPE in
   linux*)
     CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
   *)
-    echo "Mili not support your OS: $OSTYPE";;
+    echo "Mili does not support your OS yet, sorry :("
 esac
 
 _mili_auto_complete() {

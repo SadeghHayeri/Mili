@@ -37,7 +37,7 @@ function install_darwin_deps() {
 }
 
 function main() {
-  echo "Starting dependency check"
+  echo "Checking dependencies..."
   case "$OSTYPE" in
     darwin*)
       install_darwin_deps
@@ -46,7 +46,7 @@ function main() {
       install_linux_deps
       ;;
     *)
-      echo "Mili not support your OS: $OSTYPE";;
+      echo "Mili does not support your OS yet, sorry :("
   esac
 }
 

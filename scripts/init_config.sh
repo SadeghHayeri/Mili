@@ -28,12 +28,12 @@ mili_location=$1
 echo "# Mili, Automatic Login for MikroTik Services"
 echo "# Version 0.1.0, Alpha A"
 echo "-------------------------------------------"
-echo "# Made With <3 by Sadegh Hayeri - (https://github.com/SadeghHayeri)"
+echo "# Made with <3 by Sadegh Hayeri - (https://github.com/SadeghHayeri)"
 echo
-echo "# First you must enter your MikroTik URl"
+echo "# First you must enter the MikroTik URl"
 
-echo "(For example if you using https://example.com/login for login and https://example.com/logout for logout"
-echo "you must enter general https://example.com URL as an input)"
+echo "(For example if you're using https://example.com/login for login and https://example.com/logout for logout"
+echo "you must enter https://example.com URL as the MikroTik URL)"
 echo
 
 function check_mikrotik_services() {
@@ -73,13 +73,13 @@ function set_base_url() {
   base_url=''
   while [[ true ]]; do
     read -p 'Mikrotik URL: ' base_url
-    echo 'Checking for MikroTik Services...'
+    echo 'Checking MikroTik Services...'
     check_mikrotik_services
     if [[ $? -eq 0 ]]; then
       echo "Successful"
       break
     else
-      echo 'Bad URL, check address'
+      echo 'Bad URL, check MicroTick address'
       echo 'Try again'
       echo
     fi
@@ -89,7 +89,7 @@ function set_base_url() {
 
 function add_login_information() {
   echo
-  echo "# Now you can add your login inforamtion"
+  echo "# Now you can add login inforamtion"
 
   select option in 'Add new login info' 'End';
   do
@@ -98,13 +98,13 @@ function add_login_information() {
         read -r -p 'Username: ' username
         read -r -s -p 'Password: ' password
         check_and_save "$username" "$password"
-        echo "# Now you can add your login inforamtion"
+        echo "# Now you can add login inforamtion"
         ;;
       'End')
         break
         ;;
       *)
-        echo "# Only 1 or 2 please!"
+        echo "# Only 1 or 2! please!"
         ;;
     esac
   done
