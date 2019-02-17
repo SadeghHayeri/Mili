@@ -47,7 +47,7 @@ mili config
 ```
 
 ##### MacOnly (disable captive popup page)
-`this is optional`
+`this is optional (Note: disabling SIP is unsafe. enable it immediately after rename captive network.)`
 1. Restart your Mac.
 2. Before OS X starts up, hold down Command-R and keep it held down until you see an Apple icon and a progress bar. Release. This boots you into Recovery.
 3. From the Utilities menu, select Terminal.
