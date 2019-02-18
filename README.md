@@ -76,7 +76,7 @@ mili
 mili login
 ```
 
-##### `Login with specific user (password must saved before)`
+##### `Login with specific user (Password must be saved beforehand)`
 ```
 mili login <UserName>
 ```
