@@ -4,9 +4,19 @@ PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:"
 
 case $OSTYPE in
   darwin*)
-    CONFIG=$(cat "/Users/<-USER->/.mili/config.json");;
+    if [ -z "$XDG_CONFIG_HOME" ]
+    then
+      CONFIG=$(cat "/Users/<-USER->/.mili/config.json");;
+    else
+      CONFIG=$(cat "$XDG_CONFIG_HOME/mili/config.json");;
+    fi
   linux*)
-    CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
+    if [ -z "$XDG_CONFIG_HOME" ]
+    then
+      CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
+    else
+      CONFIG=$(cat "$XDG_CONFIG_HOME/mili/config.json");;
+    fi
   *)
     echo "Mili does not support your OS yet, sorry :("
 esac

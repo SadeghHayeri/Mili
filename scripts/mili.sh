@@ -5,9 +5,19 @@ mili_location="<-MILI-LOCATION->"
 
 case $OSTYPE in
   darwin*)
-    CONFIG=$(cat "/Users/<-USER->/.mili/config.json");;
+    if [ -z "$XDG_CONFIG_HOME" ]
+    then
+      CONFIG=$(cat "/Users/<-USER->/.mili/config.json");;
+    else
+      CONFIG=$(cat "$XDG_CONFIG_HOME/mili/config.json");;
+    fi
   linux*)
-    CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
+    if [ -z "$XDG_CONFIG_HOME" ]
+    then
+      CONFIG=$(cat "/home/<-USER->/.mili/config.json");;
+    else
+      CONFIG=$(cat "$XDG_CONFIG_HOME/mili/config.json");;
+    fi
   *)
     echo "Mili does not support your OS yet, sorry :(";;
 esac
@@ -104,7 +114,12 @@ function notify_user() {
     terminal-notifier -title Mili -message "$message" -open "$base_url/login" -sender com.apple.automator.Mili -group mili > /dev/null
   else
     local user="<-USER->"
-    sudo -u $user DISPLAY=:0 "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u $user)/bus" notify-send "Mili" "$message" -i "/home/sadegh/.mili/logo.png"
+    if [ -z "$XDG_DATA_HOME" ]
+    then
+      sudo -u $user DISPLAY=:0 "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u $user)/bus" notify-send "Mili" "$message" -i "/home/sadegh/.mili/logo.png"
+    else
+      sudo -u $user DISPLAY=:0 "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u $user)/bus" notify-send "Mili" "$message" -i "$XDG_DATA_HOME/mili/logo.png"
+    end
   fi
 
 }

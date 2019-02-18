@@ -5,9 +5,9 @@ case "$OSTYPE" in
     user=$(id -un)
     if [ -z "$XDG_DATA_HOME" ]
     then
-        mili_location="/Users/$user/.mili"
+      mili_location="/Users/$user/.mili"
     else
-        mili_location="$XDG_DATA_HOME/mili"
+      mili_location="$XDG_DATA_HOME/mili"
     fi
     script_location="$mili_location/bin"
     service_location="/Users/$user/Library/LaunchAgents"
@@ -16,9 +16,9 @@ case "$OSTYPE" in
     user=$(id -un)
     if [ -z "$XDG_DATA_HOME" ]
     then
-        mili_location="/home/$user/.mili"
+      mili_location="/home/$user/.mili"
     else
-        mili_location="$XDG_DATA_HOME/mili"
+      mili_location="$XDG_DATA_HOME/mili"
     fi
     script_location="$mili_location/bin"
     service_location="/etc/systemd/system"

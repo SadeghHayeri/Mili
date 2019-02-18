@@ -11,6 +11,13 @@ echo "
     [0;1;32;92m▀▀[0m        [0;1;33;93m▀▀[0m     [0;1;34;94m▀[0;1;35;95m▀[0m    [0;1;33;93m▀[0;1;32;92m▀[0m  [0;1;36;96m▀[0;1;34;94m▀▀[0;1;35;95m▀▀[0;1;31;91m▀▀[0;1;33;93m▀[0m     [0;1;34;94m▀▀[0;1;35;95m▀▀[0m   [0;1;33;93m▀[0;1;32;92m▀▀[0;1;36;96m▀▀[0;1;34;94m▀▀[0;1;35;95m▀[0m     [0;1;32;92m▀▀[0m        [0;1;33;93m▀▀[0m
 "
 
+if [ -z "$XDG_CONFIG_HOME" ]
+then
+  mili_config_location="$mili_location"
+else
+  mili_config_location="$XDG_CONFIG_HOME/mili"
+fi
+
 # inplace sed
 function ised() {
   local exp=$1
@@ -45,7 +52,7 @@ function check_mikrotik_services() {
 }
 
 function generate_basic_config() {
-  cat > "$mili_location/config.json" <<- EOM
+  cat > "$mili_config_location/config.json" <<- EOM
 {
   "version": 0,
 	"enable": true,
@@ -64,8 +71,8 @@ function check_and_save() {
   echo
   echo 'OK'
   if [[ $? -eq 0 ]]; then
-    cat "$mili_location/config.json" | jq ".login_information[.login_information | length] |= . + {\"username\": \"$username\", \"password\": \"$password\", \"share\": 1}" > "$mili_location/config.json.tmp"
-    mv "$mili_location/config.json.tmp" "$mili_location/config.json"
+    cat "$mili_config_location/config.json" | jq ".login_information[.login_information | length] |= . + {\"username\": \"$username\", \"password\": \"$password\", \"share\": 1}" > "$mili_config_location/config.json.tmp"
+    mv "$mili_config_location/config.json.tmp" "$mili_config_location/config.json"
   fi
 }
 
@@ -84,7 +91,7 @@ function set_base_url() {
       echo
     fi
   done
-  ised "s|<-BASEURL->|$base_url|g" "$mili_location/config.json"
+  ised "s|<-BASEURL->|$base_url|g" "$mili_config_location/config.json"
 }
 
 function add_login_information() {
@@ -110,6 +117,6 @@ function add_login_information() {
   done
 }
 
-generate_basic_config $mili_location
+generate_basic_config $mili_config_location
 set_base_url
 add_login_information
