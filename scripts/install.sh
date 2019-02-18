@@ -29,6 +29,13 @@ case "$OSTYPE" in
     ;;
 esac
 
+if [ -z "$XDG_CONFIG_HOME" ]
+then
+  mili_config_location="$mili_location"
+else
+  mili_config_location="$XDG_CONFIG_HOME/mili"
+fi
+
 # inplace sed
 function ised() {
   local exp=$1
@@ -57,7 +64,7 @@ function add_startup_service() {
 
   if [[ $OSTYPE == darwin* ]]; then
     cp ../asserts/com.mikrotik.mili.plist "$service_location/com.mikrotik.mili.plist"
-    ised "s|<-USER->|$user|g" "$service_location/com.mikrotik.mili.plist"
+    ised "s|<-MILI->|$mili_location|g" ""
 
     echo "Enabling MikroTik services..."
     launchctl remove com.mikrotik.mili
