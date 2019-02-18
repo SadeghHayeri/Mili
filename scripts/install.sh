@@ -3,13 +3,23 @@
 case "$OSTYPE" in
   darwin*)
     user=$(id -un)
-    mili_location="/Users/$user/.mili"
+    if [ -z "$XDG_DATA_HOME" ]
+    then
+        mili_location="/Users/$user/.mili"
+    else
+        mili_location="$XDG_DATA_HOME/mili"
+    fi
     script_location="$mili_location/bin"
     service_location="/Users/$user/Library/LaunchAgents"
     ;;
   linux*)
     user=$(id -un)
-    mili_location="/home/$user/.mili"
+    if [ -z "$XDG_DATA_HOME" ]
+    then
+        mili_location="/home/$user/.mili"
+    else
+        mili_location="$XDG_DATA_HOME/mili"
+    fi
     script_location="$mili_location/bin"
     service_location="/etc/systemd/system"
     ;;
