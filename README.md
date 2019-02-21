@@ -1,4 +1,4 @@
-# Mili
+# Mili - Hotspot Auto login Script
 <p align="center">
   <img src="images/logo.png" alt="mili logo" width="400">
 </p>
