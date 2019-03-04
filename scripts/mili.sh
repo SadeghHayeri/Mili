@@ -50,12 +50,15 @@ function select_random_user() {
 function login() {
   local username=$1
   local password=$2
-  password=$(echo $password | sed 's| |%20|g') # fix space in password
 
   get_status
   if [[ $? -eq 0 ]]; then logout; fi;
 
-  curl -s "$base_url/login?username=$username&password=$password" | grep "logged" >> /dev/null
+  curl -s \
+    --data-urlencode "username=$username" \
+    --data-urlencode "password=$password" \
+    "$base_url/login" | grep "logged" >> /dev/null
+
   local successful=$?
 
   if [[ $successful -eq 0 ]]; then
