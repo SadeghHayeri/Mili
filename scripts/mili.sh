@@ -164,11 +164,6 @@ function auto_login() {
   fi
 
   try_login
-  if [[ $? -eq 0 ]]; then
-    # check for new updates
-    curl -sSL https://raw.githubusercontent.com/SadeghHayeri/Mili/master/scripts/update.sh | sh > /dev/null 2>&1
-    return 0
-  fi
   return $?
 }
 
