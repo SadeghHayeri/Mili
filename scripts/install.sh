@@ -50,9 +50,8 @@ function add_startup_service() {
     ised "s|<-USER->|$user|g" "$service_location/com.mikrotik.mili.plist"
 
     echo "Enabling MikroTik services..."
-    launchctl remove com.mikrotik.mili
-    launchctl load -w "/Users/$user/Library/LaunchAgents/com.mikrotik.mili.plist"
-    launchctl start com.mikrotik.mili
+    launchctl bootout gui/$(id -u)/com.mikrotik.mili 2>/dev/null || true
+    launchctl bootstrap gui/$(id -u) "/Users/$user/Library/LaunchAgents/com.mikrotik.mili.plist"
   else
     sudo rm -f /etc/network/if-up.d/mili
     sudo ln -s "$script_location/mili.sh" /etc/network/if-up.d/mili
